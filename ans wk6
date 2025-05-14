@@ -1,0 +1,129 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive JS Fun</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h1 id="header">Welcome!</h1>
+
+  <button id="colorBtn">Change Header Color</button>
+  <button id="doubleClickBtn">Double-Click Me!</button>
+
+  <div id="gallery">
+    <img id="mainImage" src="https://via.placeholder.com/300" alt="Gallery">
+    <div>
+      <button onclick="changeImage(1)">Image 1</button>
+      <button onclick="changeImage(2)">Image 2</button>
+      <button onclick="changeImage(3)">Image 3</button>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-btn">Show More</button>
+    <div class="accordion-content">
+      <p>This is hidden accordion content!</p>
+    </div>
+  </div>
+
+  <form id="signupForm">
+    <h2>Sign Up</h2>
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <p id="feedback"></p>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+styles.css
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+button {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.accordion.open .accordion-content {
+  max-height: 100px;
+}
+
+#header:hover {
+  color: teal;
+  transition: color 0.3s;
+}
+
+#feedback {
+  color: red;
+  font-size: 0.9em;
+}
+
+
+script.js
+document.getElementById('colorBtn').addEventListener('click', () => {
+  const header = document.getElementById('header');
+  header.style.color = header.style.color === 'crimson' ? 'black' : 'crimson';
+});
+
+document.getElementById('doubleClickBtn').addEventListener('dblclick', () => {
+  alert("🎉 You discovered the secret double-click!");
+});
+
+document.addEventListener('keypress', (e) => {
+  console.log(`You pressed: ${e.key}`);
+});
+
+function changeImage(index) {
+  const img = document.getElementById('mainImage');
+  img.src = `https://via.placeholder.com/300?text=Image+${index}`;
+}
+
+document.querySelector('.accordion-btn').addEventListener('click', () => {
+  document.querySelector('.accordion').classList.toggle('open');
+});
+
+const passwordField = document.getElementById('password');
+const feedback = document.getElementById('feedback');
+
+passwordField.addEventListener('input', () => {
+  if (passwordField.value.length < 8) {
+    feedback.textContent = "Password must be at least 8 characters.";
+  } else {
+    feedback.textContent = "";
+  }
+});
+
+document.getElementById('signupForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const regex = /^\S+@\S+\.\S+$/;
+  
+  if (!regex.test(email)) {
+    feedback.textContent = "Please enter a valid email.";
+    return;
+  }
+
+  if (passwordField.value.length < 8) {
+    feedback.textContent = "Password too short.";
+    return;
+  }
+
+  feedback.textContent = "Form submitted successfully! 🎉";
+  feedback.style.color = 'green';
+});
+
